@@ -1,0 +1,264 @@
+---
+import ContributionGrid from './ContributionGrid.astro';
+
+interface Props {
+	player: 'one' | 'two';
+	label: string;
+}
+
+const { player, label } = Astro.props;
+---
+
+<article class={`player-card player-${player}`} data-player-card={player}>
+	<header class="player-header">
+		<h2>{label}</h2>
+		<p class="username" data-username></p>
+	</header>
+	<p class="fighter-class" data-fighter-class hidden></p>
+	<table class="stats-table">
+		<caption>Battle stats</caption>
+		<tbody>
+			<tr data-stat-row="total">
+				<th scope="row">Total contributions (past year)</th>
+				<td data-stat-value="total">
+					<span data-stat-number>—</span>
+					<small class="stat-points" data-stat-points></small>
+				</td>
+			</tr>
+			<tr data-stat-row="longestStreak">
+				<th scope="row">Longest streak</th>
+				<td data-stat-value="longestStreak">
+					<span data-stat-number>—</span>
+					<small class="stat-points" data-stat-points></small>
+				</td>
+			</tr>
+			<tr data-stat-row="currentStreak">
+				<th scope="row">Current streak</th>
+				<td data-stat-value="currentStreak">
+					<span data-stat-number>—</span>
+					<small class="stat-points" data-stat-points></small>
+				</td>
+			</tr>
+			<tr data-stat-row="peak">
+				<th scope="row">Peak daily contributions</th>
+				<td data-stat-value="peak">
+					<span data-stat-number>—</span>
+					<small class="stat-points" data-stat-points></small>
+				</td>
+			</tr>
+			<tr data-stat-row="consistency">
+				<th scope="row">Consistency</th>
+				<td data-stat-value="consistency">
+					<span data-stat-number>—</span>
+					<small class="stat-points" data-stat-points></small>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<ContributionGrid />
+</article>
+
+<style>
+	.player-card {
+		position: relative;
+		min-width: 0;
+		min-height: 10rem;
+		padding: 1rem;
+		border: 1px solid var(--player-accent);
+		border-radius: 0.5rem;
+		background:
+			linear-gradient(145deg, color-mix(in srgb, var(--player-accent) 7%, transparent), transparent 45%),
+			var(--panel, #11111f);
+		box-shadow:
+			0 0 18px color-mix(in srgb, var(--player-accent) 18%, transparent),
+			inset 0 0 20px color-mix(in srgb, var(--player-accent) 4%, transparent);
+		animation: card-enter 500ms ease-out both;
+		overflow: hidden;
+	}
+
+	.player-card::after {
+		position: absolute;
+		z-index: 1;
+		inset: -100% -60%;
+		pointer-events: none;
+		background: linear-gradient(
+			110deg,
+			transparent 42%,
+			rgb(255 255 255 / 7%) 49%,
+			transparent 56%
+		);
+		content: '';
+		transform: translateX(-55%);
+		animation: card-shimmer 8s ease-in-out infinite;
+	}
+
+	.player-card > * {
+		position: relative;
+		z-index: 2;
+	}
+
+	.player-card.player-one {
+		--player-accent: var(--cyan, #45f3ff);
+		--player-secondary: var(--green, #5fed83);
+	}
+
+	.player-card.player-two {
+		--player-accent: var(--magenta, #ff4fd8);
+		--player-secondary: var(--gold, #ffd166);
+	}
+
+	header {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 0.5rem 1rem;
+	}
+
+	h2 {
+		margin: 0;
+		color: var(--player-accent);
+		font-family: var(--arcade-font, monospace);
+		font-size: clamp(0.6rem, 1.5vw, 0.8rem);
+		line-height: 1.8;
+		text-shadow: 0 0 9px color-mix(in srgb, var(--player-accent) 75%, transparent);
+	}
+
+	.username {
+		margin: 0;
+		color: var(--player-secondary);
+		font-weight: 700;
+		text-shadow: 0 0 8px color-mix(in srgb, var(--player-secondary) 55%, transparent);
+	}
+
+	.username:not(:empty)::before {
+		content: '@';
+	}
+
+	.fighter-class {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		margin: 0.65rem 0 0;
+		padding: 0.35rem 0.55rem;
+		border: 1px solid var(--player-secondary);
+		border-radius: 0.25rem;
+		background: color-mix(in srgb, var(--player-secondary) 9%, transparent);
+		color: var(--player-secondary);
+		font-family: var(--arcade-font, monospace);
+		font-size: 0.52rem;
+		line-height: 1.8;
+		text-shadow: 0 0 8px color-mix(in srgb, var(--player-secondary) 60%, transparent);
+		box-shadow: 0 0 10px color-mix(in srgb, var(--player-secondary) 18%, transparent);
+	}
+
+	.fighter-class[hidden] {
+		display: none;
+	}
+
+	.stats-table {
+		width: 100%;
+		margin-top: 0.75rem;
+		border-collapse: collapse;
+		text-align: left;
+		font-family: var(--terminal-font, monospace);
+		font-size: 0.75rem;
+	}
+
+	caption {
+		text-align: left;
+		margin-bottom: 0.35rem;
+		color: var(--player-secondary);
+		font-family: var(--arcade-font, monospace);
+		font-size: 0.55rem;
+		line-height: 1.8;
+	}
+
+	th,
+	td {
+		padding: 0.4rem 0.25rem;
+		border-bottom: 1px solid color-mix(in srgb, var(--player-accent) 18%, transparent);
+		vertical-align: top;
+	}
+
+	th {
+		color: var(--muted, #9c9caf);
+		font-weight: 400;
+	}
+
+	td {
+		text-align: right;
+		font-variant-numeric: tabular-nums;
+	}
+
+	td[data-result='winner'] {
+		background: color-mix(in srgb, var(--player-accent) 10%, transparent);
+		color: var(--player-accent);
+		font-weight: 700;
+		text-shadow: 0 0 8px color-mix(in srgb, var(--player-accent) 45%, transparent);
+	}
+
+	td[data-result='tie'] {
+		color: var(--muted, #9c9caf);
+	}
+
+	.stat-points {
+		display: block;
+		color: var(--player-secondary);
+		font-size: 0.75rem;
+		font-weight: 700;
+		text-shadow: 0 0 7px color-mix(in srgb, var(--player-secondary) 50%, transparent);
+	}
+
+	tr[data-reveal='pending'] {
+		opacity: 0.28;
+	}
+
+	tr[data-reveal='active'] {
+		animation: stat-reveal 360ms ease-out both;
+	}
+
+	td[data-result='tie'] .stat-points {
+		color: var(--muted, #9c9caf);
+		text-shadow: none;
+	}
+
+	@keyframes card-enter {
+		from {
+			opacity: 0;
+			transform: translateY(10px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@keyframes card-shimmer {
+		0%,
+		65% {
+			transform: translateX(-55%);
+		}
+		100% {
+			transform: translateX(55%);
+		}
+	}
+
+	@keyframes stat-reveal {
+		from {
+			opacity: 0.35;
+			filter: brightness(1);
+			transform: translateX(0.35rem);
+		}
+		to {
+			opacity: 1;
+			filter: brightness(1.6);
+			transform: translateX(0);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		tr[data-reveal='active'] {
+			animation: none;
+		}
+	}
+</style>

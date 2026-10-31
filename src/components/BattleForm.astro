@@ -1,0 +1,185 @@
+<form class="battle-form" data-battle-form>
+	<div class="player-input">
+		<label for="player-one">Player 1</label>
+		<input
+			id="player-one"
+			name="playerOne"
+			type="text"
+			aria-describedby="battle-status"
+			autocomplete="off"
+			autocapitalize="off"
+			spellcheck="false"
+			placeholder="GitHub username"
+			required
+		/>
+	</div>
+
+	<div class="player-input">
+		<label for="player-two">Player 2</label>
+		<input
+			id="player-two"
+			name="playerTwo"
+			type="text"
+			aria-describedby="battle-status"
+			autocomplete="off"
+			autocapitalize="off"
+			spellcheck="false"
+			placeholder="GitHub username"
+			required
+		/>
+	</div>
+
+	<fieldset class="matchup-presets">
+		<legend>Quick matchups</legend>
+		<button type="button" class="preset-button" data-preset-one="torvalds" data-preset-two="gaearon">
+			torvalds vs. gaearon
+		</button>
+		<button
+			type="button"
+			class="preset-button"
+			data-preset-one="octocat"
+			data-preset-two="sindresorhus"
+		>
+			octocat vs. sindresorhus
+		</button>
+	</fieldset>
+
+	<button type="submit" data-battle-button>BATTLE!</button>
+</form>
+
+<style>
+	.battle-form {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr)) auto;
+		align-items: end;
+		gap: 1rem;
+		margin: 2rem 0;
+		padding: 1rem;
+		border: 1px solid var(--line, #343449);
+		border-radius: 0.6rem;
+		background: var(--panel, #11111f);
+		box-shadow: inset 0 0 18px rgb(69 243 255 / 3%);
+	}
+
+	.matchup-presets {
+		display: flex;
+		flex-wrap: wrap;
+		grid-column: 1 / -1;
+		gap: 0.5rem;
+		margin: 0;
+		padding: 0;
+		border: 0;
+	}
+
+	.matchup-presets legend {
+		width: 100%;
+		margin-bottom: 0.4rem;
+	}
+
+	.player-input {
+		display: grid;
+		gap: 0.4rem;
+		animation: input-enter 500ms ease-out both;
+	}
+
+	.player-input:nth-child(2) {
+		animation-delay: 120ms;
+	}
+
+	label {
+		color: var(--cyan, #45f3ff);
+		font-family: var(--arcade-font, monospace);
+		font-size: 0.65rem;
+		text-shadow: 0 0 8px rgb(69 243 255 / 45%);
+	}
+
+	input,
+	button {
+		min-height: 2.7rem;
+		padding: 0.6rem 0.75rem;
+		border: 1px solid var(--line, #343449);
+		border-radius: 0.3rem;
+		font: inherit;
+	}
+
+	input {
+		min-width: 0;
+		background: #090912;
+		color: var(--text, #e8e8f0);
+		caret-color: var(--green, #5fed83);
+		box-shadow: inset 0 0 10px rgb(0 0 0 / 55%);
+	}
+
+	input:focus-visible {
+		border-color: var(--cyan, #45f3ff);
+		outline: 2px solid rgb(69 243 255 / 28%);
+		box-shadow: 0 0 14px rgb(69 243 255 / 20%);
+	}
+
+	button {
+		border-color: var(--green, #5fed83);
+		background: #13251b;
+		color: var(--green, #5fed83);
+		font-family: var(--arcade-font, monospace);
+		font-size: 0.7rem;
+		text-shadow: 0 0 8px rgb(95 237 131 / 70%);
+		box-shadow: 0 0 12px rgb(95 237 131 / 18%), inset 0 0 12px rgb(95 237 131 / 5%);
+		cursor: pointer;
+		transition: background 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+	}
+
+	button:hover:not(:disabled) {
+		transform: translateY(-2px);
+		background: #1b3827;
+		box-shadow: 0 0 20px rgb(95 237 131 / 40%);
+	}
+
+	button:disabled {
+		cursor: wait;
+		opacity: 0.65;
+	}
+
+	.preset-button {
+		min-height: auto;
+		padding: 0.4rem 0.65rem;
+		border-color: var(--cyan, #45f3ff);
+		background: #10131d;
+		color: var(--cyan, #45f3ff);
+		font-family: var(--terminal-font, monospace);
+		font-size: 0.9rem;
+		text-shadow: none;
+		box-shadow: none;
+	}
+
+	.matchup-presets legend {
+		color: var(--muted, #9c9caf);
+		font-family: var(--terminal-font, monospace);
+		font-size: 0.85rem;
+	}
+
+	.preset-button:hover:not(:disabled) {
+		background: #14242a;
+		box-shadow: 0 0 14px rgb(69 243 255 / 24%);
+	}
+
+	@keyframes input-enter {
+		from {
+			opacity: 0;
+			transform: translateY(8px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@media (max-width: 42rem) {
+		.battle-form {
+			grid-template-columns: 1fr;
+		}
+
+		.matchup-presets {
+			grid-column: 1;
+		}
+	}
+</style>

@@ -1,0 +1,67 @@
+<div class="fight-overlay" data-fight-overlay aria-live="assertive" hidden>
+	<p class="clash-label">CHALLENGERS APPROACHING</p>
+	<p class="fight-countdown" data-fight-countdown></p>
+</div>
+
+<style>
+	.fight-overlay[hidden] {
+		display: none;
+	}
+
+	.fight-overlay {
+		position: fixed;
+		z-index: 20;
+		inset: 0;
+		display: grid;
+		align-content: center;
+		justify-items: center;
+		gap: 1.25rem;
+		background: rgb(5 5 12 / 88%);
+		backdrop-filter: blur(3px);
+		text-align: center;
+	}
+
+	.clash-label {
+		margin: 0;
+		color: var(--cyan, #45f3ff);
+		font-family: var(--arcade-font, monospace);
+		font-size: clamp(0.6rem, 2vw, 0.9rem);
+		letter-spacing: 0.12em;
+		text-shadow: 0 0 14px currentColor;
+	}
+
+	.fight-countdown {
+		margin: 0;
+		color: var(--gold, #ffd166);
+		font-family: var(--arcade-font, monospace);
+		font-size: clamp(2.5rem, 12vw, 7rem);
+		text-shadow: 0 0 12px currentColor, 0 0 36px currentColor;
+		animation: countdown-impact 520ms ease-out both;
+	}
+
+	.fight-countdown[data-stage='FIGHT!'] {
+		color: var(--green, #5fed83);
+		font-size: clamp(2rem, 9vw, 5rem);
+	}
+
+	@keyframes countdown-impact {
+		from {
+			opacity: 0;
+			transform: scale(1.7);
+		}
+		55% {
+			opacity: 1;
+			transform: scale(0.92);
+		}
+		to {
+			opacity: 1;
+			transform: scale(1);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.fight-countdown {
+			animation: none;
+		}
+	}
+</style>

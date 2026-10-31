@@ -1,0 +1,111 @@
+<section class="contributions" data-calendar-region hidden aria-label="Contribution calendar">
+	<p class="date-range" data-date-range></p>
+	<div class="contribution-grid" data-contribution-grid role="list" aria-label="Daily contributions"></div>
+	<div
+		class="contribution-grid skeleton-grid"
+		data-loading-skeleton
+		aria-hidden="true"
+		hidden
+	></div>
+</section>
+
+<style>
+	.contributions {
+		margin-top: 1rem;
+	}
+
+	.date-range {
+		margin: 0 0 0.5rem;
+		color: var(--muted, #9c9caf);
+		font-family: var(--terminal-font, monospace);
+		font-size: 0.85rem;
+	}
+
+	.contribution-grid {
+		display: grid;
+		grid-auto-flow: column;
+		grid-template-rows: repeat(7, 0.7rem);
+		grid-auto-columns: 0.7rem;
+		gap: 0.2rem;
+		width: 100%;
+		overflow-x: auto;
+		padding: 0.15rem 0;
+	}
+
+	.contribution-grid[hidden] {
+		display: none;
+	}
+
+	.contribution-grid :global(.contribution-day[data-level='0']) {
+		background: #20202c;
+		border: 1px solid #383849;
+	}
+
+	.contribution-grid :global(.contribution-day[data-level='1']) {
+		background: #164b3c;
+		box-shadow: 0 0 4px rgb(95 237 131 / 24%);
+	}
+
+	.contribution-grid :global(.contribution-day[data-level='2']) {
+		background: #168d65;
+		box-shadow: 0 0 6px rgb(95 237 131 / 42%);
+	}
+
+	.contribution-grid :global(.contribution-day[data-level='3']) {
+		background: #23d681;
+		box-shadow: 0 0 9px rgb(95 237 131 / 70%);
+	}
+
+	.contribution-grid :global(.contribution-day[data-level='4']) {
+		background: #b7ff5e;
+		box-shadow: 0 0 5px #b7ff5e, 0 0 12px rgb(95 237 131 / 85%);
+	}
+
+	.contribution-grid :global(.contribution-day) {
+		width: 0.7rem;
+		height: 0.7rem;
+		border-radius: 0.12rem;
+		transition: transform 120ms ease, box-shadow 120ms ease;
+	}
+
+	.contribution-grid.is-revealing :global(.contribution-day) {
+		animation: cell-reveal 360ms ease-out var(--reveal-delay, 0ms) both;
+	}
+
+	.contribution-grid :global(.contribution-day:hover) {
+		z-index: 1;
+		transform: scale(1.5);
+		box-shadow: 0 0 12px var(--green, #5fed83);
+	}
+
+	.skeleton-grid :global(.skeleton-day) {
+		background: #222232;
+		border: 1px solid #39394d;
+		animation: pulse 1.2s ease-in-out infinite alternate;
+	}
+
+	@keyframes pulse {
+		to {
+			opacity: 0.4;
+		}
+	}
+
+	@keyframes cell-reveal {
+		from {
+			opacity: 0;
+			transform: scale(0.25);
+			filter: brightness(2.5);
+		}
+		to {
+			opacity: 1;
+			transform: scale(1);
+			filter: brightness(1);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.contribution-grid.is-revealing :global(.contribution-day) {
+			animation: none;
+		}
+	}
+</style>

@@ -1,17 +1,290 @@
 ---
-
+import BattleForm from '../components/BattleForm.astro';
+import BattleHealthBars from '../components/BattleHealthBars.astro';
+import BattleSequence from '../components/BattleSequence.astro';
+import BattleScoreboard from '../components/BattleScoreboard.astro';
+import BattleStatus from '../components/BattleStatus.astro';
+import PlayerCard from '../components/PlayerCard.astro';
 ---
 
+<!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Press+Start+2P&display=swap"
+			rel="stylesheet"
+		/>
 		<title>Mona Mayhem</title>
 	</head>
 	<body>
-		<h1>Mona Mayhem</h1>
-		<p>Welcome to Mona Mayhem! Time to build a GitHub Contribution Battle Arena.</p>
+		<main class="page-shell">
+			<header class="page-header">
+				<button
+					type="button"
+					class="sfx-toggle"
+					data-sfx-toggle
+					aria-pressed="true"
+					aria-label="Mute sound effects"
+				>
+					🔊 SFX: ON
+				</button>
+				<h1>Mona Mayhem</h1>
+				<p>GitHub Contribution Battle Arena</p>
+			</header>
+
+			<BattleHealthBars />
+			<BattleForm />
+			<BattleStatus />
+			<BattleScoreboard />
+
+			<section class="arena" aria-label="Battle arena">
+				<PlayerCard player="one" label="Player 1" />
+				<div class="versus" aria-hidden="true">VS</div>
+				<PlayerCard player="two" label="Player 2" />
+			</section>
+		</main>
+		<BattleSequence />
 	</body>
 </html>
+
+<script>
+	import { initializeBattleArena } from '../scripts/battle';
+
+	initializeBattleArena();
+</script>
+
+<style>
+	:global(:root) {
+		color-scheme: dark;
+		--cabinet: #0a0a12;
+		--panel: #11111f;
+		--panel-raised: #181827;
+		--line: #343449;
+		--text: #e8e8f0;
+		--muted: #9c9caf;
+		--cyan: #45f3ff;
+		--green: #5fed83;
+		--magenta: #ff4fd8;
+		--gold: #ffd166;
+		--arcade-font: 'Press Start 2P', monospace;
+		--terminal-font: 'JetBrains Mono', monospace;
+	}
+
+	:global(*) {
+		box-sizing: border-box;
+	}
+
+	:global(body) {
+		position: relative;
+		isolation: isolate;
+		min-height: 100vh;
+		margin: 0;
+		padding: 2rem;
+		overflow-x: hidden;
+		background:
+			radial-gradient(ellipse at 50% 0%, #21152f 0%, transparent 48%),
+			var(--cabinet);
+		color: var(--text);
+		font-family: var(--terminal-font), monospace;
+	}
+
+	:global(body::before),
+	:global(body::after) {
+		position: fixed;
+		z-index: -1;
+		inset: 0;
+		pointer-events: none;
+		content: '';
+	}
+
+	:global(body::before) {
+		background: repeating-linear-gradient(
+			to bottom,
+			rgb(255 255 255 / 3%) 0,
+			rgb(255 255 255 / 3%) 1px,
+			transparent 1px,
+			transparent 4px
+		);
+	}
+
+	:global(body::after) {
+		background: radial-gradient(ellipse at center, transparent 40%, rgb(0 0 0 / 72%) 100%);
+	}
+
+	.page-shell {
+		position: relative;
+		width: min(100%, 76rem);
+		margin: 0 auto;
+		padding: clamp(1rem, 3vw, 2rem);
+		border: 1px solid var(--line);
+		border-radius: 0.8rem;
+		background: rgb(10 10 18 / 88%);
+		box-shadow:
+			0 0 0 4px rgb(69 243 255 / 5%),
+			0 0 42px rgb(138 43 226 / 12%),
+			inset 0 0 36px rgb(69 243 255 / 3%);
+	}
+
+	header {
+		text-align: center;
+	}
+
+	.page-header {
+		position: relative;
+	}
+
+	.sfx-toggle {
+		position: absolute;
+		top: 0;
+		right: 0;
+		min-height: 2.5rem;
+		padding: 0.5rem 0.7rem;
+		border: 1px solid var(--cyan);
+		border-radius: 0.3rem;
+		background: var(--panel);
+		color: var(--cyan);
+		font-family: var(--terminal-font), monospace;
+		font-size: 0.75rem;
+		box-shadow: 0 0 10px rgb(69 243 255 / 15%);
+		cursor: pointer;
+	}
+
+	.sfx-toggle:hover,
+	.sfx-toggle:focus-visible {
+		background: #14242a;
+		box-shadow: 0 0 14px rgb(69 243 255 / 30%);
+	}
+
+	.sfx-toggle[aria-pressed='false'] {
+		border-color: var(--muted);
+		color: var(--muted);
+		box-shadow: none;
+	}
+
+	header h1 {
+		margin: 0;
+		color: var(--green);
+		font-family: var(--arcade-font), monospace;
+		font-size: clamp(1.3rem, 4vw, 2.4rem);
+		line-height: 1.6;
+		text-shadow:
+			0 0 5px var(--green),
+			0 0 16px rgb(95 237 131 / 75%);
+		animation: neon-pulse 3s ease-in-out infinite;
+	}
+
+	header p {
+		color: var(--muted);
+		font-size: 0.9rem;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+	}
+
+	.arena {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+		align-items: center;
+		gap: clamp(0.75rem, 2vw, 1.5rem);
+		margin: 2rem 0;
+	}
+
+	.versus {
+		display: grid;
+		width: 4.5rem;
+		aspect-ratio: 1;
+		place-items: center;
+		justify-self: center;
+		align-self: center;
+		border: 2px solid var(--gold);
+		border-radius: 50%;
+		background: linear-gradient(135deg, #171222, #30203b, #11111f);
+		background-size: 200% 200%;
+		color: var(--gold);
+		font-family: var(--arcade-font), monospace;
+		font-size: 0.75rem;
+		text-shadow: 0 0 10px var(--gold);
+		box-shadow: 0 0 18px rgb(255 209 102 / 35%);
+		animation: versus-pulse 2.4s ease-in-out infinite, versus-gradient 5s ease infinite;
+	}
+
+	@keyframes neon-pulse {
+		0%,
+		100% {
+			text-shadow: 0 0 5px var(--green), 0 0 14px rgb(95 237 131 / 55%);
+		}
+		50% {
+			text-shadow: 0 0 9px var(--green), 0 0 25px rgb(95 237 131 / 90%);
+		}
+	}
+
+	@keyframes versus-pulse {
+		50% {
+			transform: scale(1.07);
+			box-shadow: 0 0 26px rgb(255 209 102 / 60%);
+		}
+	}
+
+	@keyframes versus-gradient {
+		50% {
+			background-position: 100% 100%;
+			color: var(--cyan);
+			border-color: var(--cyan);
+			text-shadow: 0 0 12px var(--cyan);
+		}
+	}
+
+	.page-shell.screen-shake {
+		animation: screen-shake 420ms ease-in-out;
+	}
+
+	@keyframes screen-shake {
+		0%, 100% { transform: translateX(0); }
+		15% { transform: translateX(-8px) rotate(-0.3deg); }
+		30% { transform: translateX(7px) rotate(0.25deg); }
+		45% { transform: translateX(-5px); }
+		60% { transform: translateX(4px); }
+		75% { transform: translateX(-2px); }
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		:global(*),
+		:global(*::before),
+		:global(*::after) {
+			scroll-behavior: auto !important;
+			animation-duration: 0.01ms !important;
+			animation-iteration-count: 1 !important;
+			transition-duration: 0.01ms !important;
+		}
+	}
+
+	@media (max-width: 40rem) {
+		:global(body) {
+			padding: 1rem;
+		}
+
+		.arena {
+			grid-template-columns: minmax(0, 1fr);
+		}
+
+		.sfx-toggle {
+			position: static;
+			display: block;
+			margin: 0 auto 1rem;
+		}
+
+		.versus {
+			grid-column: 1;
+			grid-row: 2;
+		}
+
+		.arena :global([data-player-card='two']) {
+			grid-row: 3;
+		}
+	}
+</style>

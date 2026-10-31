@@ -1,0 +1,82 @@
+<div class="status-area" aria-live="polite">
+	<p class="ready-indicator" data-ready-indicator>
+		<span class="coin-light" aria-hidden="true"></span>
+		INSERT COIN / READY PLAYER 1
+	</p>
+	<p id="battle-status" class="battle-status" data-battle-status role="status" hidden></p>
+</div>
+
+<style>
+	.status-area {
+		min-height: 2.5rem;
+		text-align: center;
+	}
+
+	.ready-indicator {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.65rem;
+		margin: 0 0 1rem;
+		color: var(--gold, #ffd166);
+		font-family: var(--arcade-font, monospace);
+		font-size: clamp(0.55rem, 2vw, 0.75rem);
+		text-shadow: 0 0 10px rgb(255 209 102 / 75%);
+		animation: ready-blink 1s steps(2, start) infinite;
+	}
+
+	.coin-light {
+		width: 0.65rem;
+		height: 0.65rem;
+		border-radius: 50%;
+		background: var(--green, #5fed83);
+		box-shadow: 0 0 12px var(--green, #5fed83);
+	}
+
+	.battle-status[hidden],
+	.ready-indicator[hidden] {
+		display: none;
+	}
+
+	.battle-status {
+		margin: 0 0 1rem;
+		padding: 0.7rem 0.85rem;
+		border: 1px solid var(--cyan, #45f3ff);
+		border-radius: 0.35rem;
+		background: var(--panel, #11111f);
+		color: var(--cyan, #45f3ff);
+		font-family: var(--terminal-font, monospace);
+		box-shadow: 0 0 14px rgb(69 243 255 / 14%);
+	}
+
+	.battle-status[data-state='error'] {
+		border-color: var(--magenta, #ff4fd8);
+		background: #21101d;
+		color: #ff9aeb;
+		box-shadow: 0 0 14px rgb(255 79 216 / 20%);
+	}
+
+	.battle-status[data-state='loading'] {
+		color: var(--green, #5fed83);
+		animation: loading-shift 1.4s ease-in-out infinite alternate;
+	}
+
+	@keyframes ready-blink {
+		to {
+			opacity: 0.35;
+		}
+	}
+
+	@keyframes loading-shift {
+		to {
+			color: var(--magenta, #ff4fd8);
+			text-shadow: 0 0 12px rgb(255 79 216 / 75%);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.ready-indicator,
+		.battle-status[data-state='loading'] {
+			animation: none;
+		}
+	}
+</style>
